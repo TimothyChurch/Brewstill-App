@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import { reactive } from 'vue';
-import router from './router';
+import router from './router/router';
 import App from './App.vue';
 import AutoComplete from 'primevue/autocomplete';
 import Accordion from 'primevue/accordion';

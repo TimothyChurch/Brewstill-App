@@ -42,6 +42,8 @@ export default {
             mobileMenuActive: false,
             menu : [
                 {label: 'Dashboard', icon: 'pi pi-fw pi-home', to: '/'},
+								{label: 'Schedule', icon: 'pi pi-fw pi-calendar', to: '/calendar'},
+								{label: 'Recipes', icon: 'pi pi-fw pi-book', to: '/recipes'},
 				{
 					label: 'UI Kit', icon: 'pi pi-fw pi-sitemap',
 					items: [
