@@ -344,7 +344,7 @@ export default {
 					border-bottom: 1px solid var(--surface-d);
 					text-align: center;
 				}
-				
+
 				.p-rating {
 					display: inline-block;
 				}

@@ -2,6 +2,7 @@
 	<div class="p-grid">
 		<div class="p-col-12">
 			<div class="card">
+				<Button label="Add Event" icon="pi pi-calendar-plus" class="p-mr-2 p-mb-2" @click="addEvent" />
 				<FullCalendar :events="events" :options="options" />
 
 				<Dialog v-model:visible="eventDialog" :style="{width: '450px'}" header="Event Details" :modal="true" :closable="true">
@@ -59,7 +60,7 @@ export default {
 					this.changedEvent.title = this.clickedEvent.title;
 					this.changedEvent.start = this.clickedEvent.start;
 					this.changedEvent.end = this.clickedEvent.end;
-				}
+				},
 			},
 			events: null
 		};
@@ -81,6 +82,11 @@ export default {
 				}
 			}
 			return index;
+		},
+		addEvent() {
+			this.event = {};
+			this.submitted = false;
+			this.eventDialog = true;
 		},
 		save() {
 			this.eventDialog = false;
