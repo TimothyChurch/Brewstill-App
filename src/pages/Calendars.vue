@@ -38,7 +38,6 @@ import EventService from '../service/EventService';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
-
 export default {
 	data() {
 		return {
@@ -56,9 +55,7 @@ export default {
 				editable: true,
 				eventClick: (e) => {
 					this.eventDialog = true;
-
 					this.clickedEvent = e.event;
-
 					this.changedEvent.title = this.clickedEvent.title;
 					this.changedEvent.start = this.clickedEvent.start;
 					this.changedEvent.end = this.clickedEvent.end;
@@ -83,17 +80,14 @@ export default {
 					break;
 				}
 			}
-
 			return index;
 		},
 		save() {
 			this.eventDialog = false;
-
 			this.clickedEvent.setProp('title', this.changedEvent.title)
 			this.clickedEvent.setStart(this.changedEvent.start)
 			this.clickedEvent.setEnd(this.changedEvent.end)
 			this.clickedEvent.setAllDay(this.changedEvent.allDay)
-
 			this.changedEvent = {title:'', start: null, end:'', allDay: null};
 		},
 		reset() {
@@ -106,5 +100,4 @@ export default {
 </script>
 
 <style scoped>
-
 </style>

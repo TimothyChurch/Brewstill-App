@@ -7,11 +7,7 @@ const routes = [
         name: 'dashboard',
         component: Dashboard,
     },
-    {
-        path: '/calendar',
-        name: 'calendar',
-        component: () => import('../pages/Calendar.vue'),
-    },
+
     {
         path: '/recipes',
         name: 'recipes',
@@ -40,6 +36,11 @@ const routes = [
       path: '/calculators',
       name: 'calculators',
       component: () => import('../pages/Calculators.vue'),
+    },
+    {
+        path: '/calendar',
+        name: 'calendar',
+        component: () => import('../pages/Calendars.vue'),
     },
 ];
 
