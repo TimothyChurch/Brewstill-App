@@ -78,6 +78,7 @@
 						</template>
 					</Column>
 				</DataTable>
+				
 
 				<Dialog v-model:visible="productDialog" :style="{width: '450px'}" header="Product Details" :modal="true" class="p-fluid">
 					<img :src="'assets/layout/images/product/' + product.image" :alt="product.image" class="product-image" v-if="product.image" />

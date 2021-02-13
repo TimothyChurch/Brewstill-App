@@ -30,7 +30,7 @@
 					</div>
 					<template #footer>
 						<Button label="Save" v-if="clickedEvent" icon="pi pi-check" class="p-button-text" @click="save"/>
-						<Button label="Save" v-else icon="pi pi-check" class="p-button-text" @click="save"/>
+						<Button label="Save" v-else icon="pi pi-check" class="p-button-text" @click="createEvent"/>
 						<Button label="Reset" v-if="clickedEvent" icon ="pi pi-refresh" class="p-button-text" @click="reset" />
 						<Button label="Reset" v-else icon ="pi pi-refresh" class="p-button-text" @click="reset" />
 					</template>
@@ -41,16 +41,16 @@
 </template>
 
 <script>
-import EventService from '../service/EventService';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import { mapState, mapActions } from 'vuex'
+
 export default {
 	data() {
 		return {
 			eventDialog: false,
-			clickedEvent: null,
-			changedEvent: {title:'', start: null, end:'', allDay: null},
+			event: this.createNewEventObject(),
 			options: {
 				plugins:[dayGridPlugin, timeGridPlugin, interactionPlugin],
 				defaultDate: '2019-01-01',
@@ -66,20 +66,31 @@ export default {
 					this.changedEvent.title = this.clickedEvent.title;
 					this.changedEvent.start = this.clickedEvent.start;
 					this.changedEvent.end = this.clickedEvent.end;
-					console.log(this.clickedEvent);
+					this.changedEvent.id = this.clickedEvent.id;
 				},
 			},
-			events: null
 		};
 	},
-	eventService: null,
 	created() {
-		this.eventService = new EventService();
+		this.$store.dispatch('fetchEvents')
 	},
-	mounted() {
-		this.eventService.getEvents().then(data => this.events = data);
-	},
+	computed: mapState(['events']),
 	methods: {
+		...mapActions(['/fetchEvents', '/createEvent']),
+		createEvent() {
+			this.$store.dispatch('createEvent', this.newEvent)
+		},
+		createNewEventObject() {
+			const id = Math.floor(Math.random() * 10000000)
+
+			return {
+				id: id,
+				title: '',
+				start: null,
+				end: '',
+				allDay: null
+			}
+		},
 		findIndexById(id) {
 			let index = -1;
 			for (let i = 0; i < this.events.length; i++) {
@@ -101,6 +112,7 @@ export default {
 			this.clickedEvent.setStart(this.changedEvent.start)
 			this.clickedEvent.setEnd(this.changedEvent.end)
 			this.clickedEvent.setAllDay(this.changedEvent.allDay)
+			console.log(this.clickedEvent)
 			this.eventService.postEvents(this.clickedEvent)
 			this.changedEvent = {title:'', start: null, end:'', allDay: null};
 		},
