@@ -1,8 +1,20 @@
 import axios from 'axios';
 
-export default class EventService {
+const apiClient = axios.create({
+  baseURL: 'assets/layout/data',
+  withCredentials: false,
+  headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json'
+  }
+})
 
+export default class EventService {
     getEvents() {
-        return axios.get('assets/layout/data/events.json').then(res => res.data.data);
+        return apiClient.get('/events.json')
+        .then(res => res.data.data)
     }
+    postEvent(event) {
+      return apiClient.post('/events.json', event)
+  }
 }

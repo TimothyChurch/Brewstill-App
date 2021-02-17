@@ -1,11 +1,10 @@
 <template>
 	<div class="layout-profile">
 		<div>
-			<img src="assets/layout/images/profile.png" alt="" />
+			<img src="./assets/images/ingredients.png" alt="" />
 		</div>
 		<button class="p-link layout-profile-link" @click="onClick">
-			<span class="username">Claire Williams</span>
-			<i class="pi pi-fw pi-cog"></i>
+			<span class="username">Timothy Church</span>
 		</button>
         <transition name="layout-submenu-wrapper">
             <ul v-show="expanded">
@@ -14,7 +13,7 @@
                 <li><button class="p-link"><i class="pi pi-fw pi-power-off"></i><span>Logout</span></button></li>
             </ul>
         </transition>
-		
+
 	</div>
 </template>
 

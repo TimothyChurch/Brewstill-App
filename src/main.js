@@ -1,6 +1,8 @@
 import { createApp } from 'vue';
 import { reactive } from 'vue';
-import router from './router';
+import store from './store/store'
+
+import router from './router/router';
 import App from './App.vue';
 import AutoComplete from 'primevue/autocomplete';
 import Accordion from 'primevue/accordion';
@@ -45,6 +47,7 @@ import Panel from 'primevue/panel';
 import PanelMenu from 'primevue/panelmenu';
 import Password from 'primevue/password';
 import PickList from 'primevue/picklist';
+import PrimeVue from 'primevue/config';
 import ProgressBar from 'primevue/progressbar';
 import Rating from 'primevue/rating';
 import RadioButton from 'primevue/radiobutton';
@@ -81,18 +84,21 @@ import '@fullcalendar/timegrid/main.min.css';
 import './assets/layout/layout.scss';
 import './assets/layout/flags/flags.css';
 
+
 router.beforeEach(function(to, from, next) {
     window.scrollTo(0, 0);
     next();
 });
 
-const app = createApp(App);
+const app = createApp(App).use(store);
 
 app.config.globalProperties.$appState = reactive({ inputStyle: 'outlined' });
 app.config.globalProperties.$primevue = reactive({ ripple: true });
 
 app.use(ToastService);
 app.use(router);
+app.use(PrimeVue);
+app.use(store);
 
 app.directive('tooltip', Tooltip);
 app.directive('ripple', Ripple);
