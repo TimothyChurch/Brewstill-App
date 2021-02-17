@@ -1,12 +1,13 @@
 import { createStore } from 'vuex'
-import EventService from "@/service/EventService"
-import axios from 'axios'
+import EventService from "../service/EventService.js"
 
 export default createStore({
-  state: {
-    events: [],
-    event: {},
-    eventTotal: 0
+  state() {
+    return {
+      events: [],
+      event: {},
+      eventTotal: 0
+    }
   },
   mutations: {
     SET_EVENTS(state, events) {
@@ -18,15 +19,16 @@ export default createStore({
   },
   actions: {
     fetchEvents({ commit }) {
-axios.get('assets/layout/data/events.json').then(response => {commit('SET_EVENTS', response.data.data)})
-      // EventService.getEvents()
-      // .then(response => {
-      //   commit('SET_EVENTS', response.data)
-      // })
+      return EventService.getEvents()
+      .then(response => {
+        commit('SET_EVENTS', response.data)
+      })
     },
     createEvent({ commit }, event) {
-      EventService.postEvent(event)
-      commit('ADD_EVENT', event)
+      return EventService.postEvent(event)
+      .then(() => {
+        commit('ADD_EVENT', event)
+      })
     }
   }
 })

@@ -9,30 +9,24 @@
 					<div class="p-fluid">
 						<div class="p-field">
 							<label for="title">Title</label>
-							<InputText id="title" v-if="clickedEvent" v-model="changedEvent.title" required="true" autofocus/>
-							<InputText id="title" v-else v-model="newEvent.title" required="true" autofocus/>
+							<InputText id="title" v-model="event.title" required="true" autofocus/>
+							<h1>{{ event.title }}</h1>
 						</div>
 						<div class="p-field">
 							<label for="start">From</label>
-							<Calendar id="start" v-if="clickedEvent" v-model="changedEvent.start" :showTime="true" appendTo="body"/>
-							<Calendar id="start" v-else v-model="newEvent.start" :showTime="true" appendTo="body"/>
+							<Calendar id="start" v-model="event.start" :showTime="true" appendTo="body"/>
 						</div>
 						<div class="p-field">
 							<label for="end">To</label>
-							<Calendar id="end" v-if="clickedEvent" v-model="changedEvent.end" :showTime="true" appendTo="body"/>
-							<Calendar id="end" v-else v-model="newEvent.end" :showTime="true" appendTo="body"/>
+							<Calendar id="end" v-model="event.end" :showTime="true" appendTo="body"/>
 						</div>
 						<div class="p-field-checkbox">
-							<Checkbox id="allday" v-if="clickedEvent" name="allday" value="All Day" v-model="changedEvent.allDay" />
-							<Checkbox id="allday" v-else name="allday" value="All Day" v-model="newEvent.allDay" />
+							<Checkbox id="allday" name="allday" value="All Day" v-model="event.allDay" />
 							<label for="allday">All Day</label>
 						</div>
 					</div>
 					<template #footer>
-						<Button label="Save" v-if="clickedEvent" icon="pi pi-check" class="p-button-text" @click="save"/>
-						<Button label="Save" v-else icon="pi pi-check" class="p-button-text" @click="createEvent"/>
-						<Button label="Reset" v-if="clickedEvent" icon ="pi pi-refresh" class="p-button-text" @click="reset" />
-						<Button label="Reset" v-else icon ="pi pi-refresh" class="p-button-text" @click="reset" />
+						<Button label="Save" icon="pi pi-check" class="p-button-text" @click="save"/>
 					</template>
 				</Dialog>
 			</div>
@@ -60,13 +54,14 @@ export default {
 					right: 'dayGridMonth,timeGridWeek,timeGridDay'
 				},
 				editable: true,
-				eventClick: (e) => {
+				eventClick: (clicked) => {
+					this.event.id = clicked.event.id;
+					this.event.title = clicked.event.title;
+					this.event.start = clicked.event.start;
+					this.event.end = clicked.event.end;
+					this.event.allDay = clicked.event.allDay;
+					this.clickedEvent = clicked.event;
 					this.eventDialog = true;
-					this.clickedEvent = e.event;
-					this.changedEvent.title = this.clickedEvent.title;
-					this.changedEvent.start = this.clickedEvent.start;
-					this.changedEvent.end = this.clickedEvent.end;
-					this.changedEvent.id = this.clickedEvent.id;
 				},
 			},
 		};
@@ -102,35 +97,18 @@ export default {
 			return index;
 		},
 		addEvent() {
-			this.newEvent = {};
+			this.event = {};
 			this.submitted = false;
 			this.eventDialog = true;
 		},
 		save() {
 			this.eventDialog = false;
-			this.clickedEvent.setProp('title', this.changedEvent.title)
-			this.clickedEvent.setStart(this.changedEvent.start)
-			this.clickedEvent.setEnd(this.changedEvent.end)
-			this.clickedEvent.setAllDay(this.changedEvent.allDay)
-			console.log(this.clickedEvent)
-			this.eventService.postEvents(this.clickedEvent)
-			this.changedEvent = {title:'', start: null, end:'', allDay: null};
-		},
-		saveNew() {
-			this.submitted = true;
-			this.newEvent.id = this.createId();
-			this.events.push(this.newEvent);
-			this.$toast.add({severity:'success', summary: 'Successful', detail: 'Product Created', life: 3000});
-			this.eventDialog = false;
-			this.newEvent = {};
-		},
-		reset() {
-			this.changedEvent.title = this.clickedEvent.title;
-			this.changedEvent.start = this.clickedEvent.start;
-			this.changedEvent.end = this.clickedEvent.end;
-		},
-		resetNew() {
-			this.newEvent = {};
+			this.clickedEvent.setProp('title', this.event.title)
+			this.clickedEvent.setStart(this.event.start)
+			this.clickedEvent.setEnd(this.event.end)
+			this.clickedEvent.setAllDay(this.event.allDay)
+			this.$store.dispatch('createEvent')
+			this.changedEvent = this.createNewEventObject()
 		},
 		createId() {
 			let id = '';

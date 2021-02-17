@@ -15,6 +15,6 @@ export default class EventService {
         .then(res => res.data.data)
     }
     postEvent(event) {
-      return axios.post('/events.json', event)
+      return apiClient.post('/events.json', event)
   }
 }
